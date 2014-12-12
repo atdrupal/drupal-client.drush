@@ -12,6 +12,9 @@ function drush_client_drush_command() {
     'arguments' => array(
       'path' => 'Request path',
     ),
+    'options' => array(
+      'uid' => 'User ID to auth, 0 to disable',
+    ),
   );
   
   $items['dpost'] = array(
@@ -22,6 +25,9 @@ function drush_client_drush_command() {
       'data' => 'Input data in JSON format.',
       'button' => 'Button to click.',
     ),
+    'options' => array(
+      'uid' => 'User ID to auth, 0 to disable',
+    ),
   );
 
   return $items;
@@ -29,16 +35,15 @@ function drush_client_drush_command() {
 
 function drush_client_drush_get($url) {
   require_once dirname(__FILE__) . '/drush_client.php';
-  $client = new DrushClient();
+  $uid = drush_get_option('uid');
+  $client = new DrushClient($uid);
   return $client->get($url);
 }
 
-function drush_client_drush_post($url, $input, $button = NULL) {
-  $keys = drush_get_option('keys');
-  $vals = drush_get_option('values');
-  
+function drush_client_drush_post($url, $input, $button = NULL) {  
   require_once dirname(__FILE__) . '/drush_client.php';
-  $client = new DrushClient();
+  $uid = drush_get_option('uid');
+  $client = new DrushClient($uid);
 
   $params = json_decode($input, TRUE);
   return $client->post($url, $params ? $params : array(), $button);
