@@ -52,6 +52,11 @@ function drush_client_drush_post($url, $input, $button = NULL) {
   $uid = drush_get_option('uid', 1);
   $client = new DrushClient($uid);
 
-  $params = json_decode($input, TRUE);
+  $params = array_map(function($i) {
+    if (is_string($i) && 'FALSE' === $i) {
+      return FALSE;
+    }
+    return $i;
+  }, json_decode($input, TRUE));
   return $client->post($url, $params ? $params : array(), $button);
 }
