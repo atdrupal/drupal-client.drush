@@ -15,6 +15,10 @@ function drush_client_drush_command() {
     'options' => array(
       'uid' => 'User ID to auth, 0 to disable',
     ),
+    'examples' => array(
+      'drush dget node/1 --uid=0',
+      'drush dget admin/help --uid=1'
+    ),
   );
   
   $items['dpost'] = array(
@@ -27,6 +31,9 @@ function drush_client_drush_command() {
     ),
     'options' => array(
       'uid' => 'User ID to auth, 0 to disable',
+    ),
+    'examples' => array(
+      'drush dpost admin/config/system/site-information \'{"site_name": "Drupal"}\''
     ),
   );
 
