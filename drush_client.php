@@ -1,8 +1,6 @@
 <?php
 
 /**
- * WARNING: This work as user-1, can do anything on your site.
- *
  * Class helps perform request to Drupal site.
  *
  * Example usage:
@@ -14,20 +12,28 @@
  *
  */
 class DrushClient extends DrupalWebTestCase {
+  private $uid;
+
+  public function __construct($uid = 1) {
+    $this->uid = $uid;
+  }
+
   private function auth() {
     global $user;
 
-    if (!$user || empty($user->uid)) {
-      $user = user_load(1);
-      $url = user_pass_reset_url($user);
-      $this->drupalGet($url);
-      $this->drupalPost(NULL, array(), "Log in");
+    if ($this->uid) {
+      if (!$user || empty($user->uid)) {
+        $user = user_load($this->uid);
+        $url = user_pass_reset_url($user);
+        $this->drupalGet($url);
+        $this->drupalPost(NULL, array(), "Log in");
+      }
     }
   }
 
   public function get($path, array $options = array(), array $headers = array()) {
     $this->auth();
-    $return = $this->drupalGet($path, $options, $header);
+    return $this->drupalGet($path, $options, $header);
   }
 
   public function post($path, $edit, $submit, array $options = array(), array $headers = array(), $form_html_id = NULL, $extra_post = NULL) {
