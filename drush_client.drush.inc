@@ -41,13 +41,15 @@ function drush_client_drush_command() {
 }
 
 function drush_client_drush_get($url) {
+  require_once drupal_get_path('module', 'simpletest') . '/drupal_web_test_case.php';
   require_once dirname(__FILE__) . '/drush_client.php';
   $uid = drush_get_option('uid', 1);
   $client = new DrushClient($uid);
   return $client->get($url);
 }
 
-function drush_client_drush_post($url, $input, $button = NULL) {  
+function drush_client_drush_post($url, $input, $button = NULL) {
+  require_once drupal_get_path('module', 'simpletest') . '/drupal_web_test_case.php';
   require_once dirname(__FILE__) . '/drush_client.php';
   $uid = drush_get_option('uid', 1);
   $client = new DrushClient($uid);
